@@ -6,11 +6,11 @@
 
     <el-container id='container' style="direction: horizontal">
       <el-aside style="width: 226px">
-    
+
       </el-aside>
 
       <el-main>
-
+        <img id='empty-pic' src='~@/assets/coding.png'/>
       </el-main>
     </el-container>
   </el-container>
@@ -45,16 +45,24 @@
 }
 
 .el-aside {
-  height: 100%;
+  min-height: 503px;
   flex-direction: column;
   background-color: #FFFFFF;
 }
 
 .el-main {
-  height: 100%;
+  min-height: 503px;
   width: 100%;
+  align-items: center;
+  justify-content: center;
   border-left:1px solid rgba(64, 158, 255, 0.1);
   flex-direction: column;
   background-color: #FFFFFF;
+}
+
+#empty-pic {
+  height: 100px;
+  width: 100px;
+  opacity: 0.7;
 }
 </style>

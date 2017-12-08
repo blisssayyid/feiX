@@ -57,17 +57,17 @@
 }
 
 .title-close {
-  border: 1px solid #D25448;
+  border: 0.5px solid #D25448;
   background-color: #ED6A5E;
 }
 
 .title-minimize {
-  border: 1px solid #D8A244;
+  border: 0.5px solid #D8A244;
   background-color: #F6BF4F;
 }
 
 .title-maximize {
-  border: 1px solid #57A943;
+  border: 0.5px solid #57A943;
   background-color: #62C554;
 }
 
@@ -113,9 +113,10 @@
 #wrapper {
   height: 100%;
   width: 100%;
-  background-color: #409EFF;
+  background-color: #262626;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
   -webkit-app-region: drag;
 }
 
