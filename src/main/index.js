@@ -23,6 +23,8 @@ function createWindow () {
     height: 558,
     useContentSize: true,
     width: 680,
+    titleBarStyle: 'customButtonsOnHover',
+    center: true,
     // 设置无边框
     frame: false
   })

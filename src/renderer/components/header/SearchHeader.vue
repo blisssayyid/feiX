@@ -2,7 +2,7 @@
 <div id='wrapper'>
   <div class='title-btns-search'>
     <div class='title-btns'>
-      <div class='title-btn title-close'>
+      <div class='title-btn title-close' @click='closeSystem'>
 
       </div>
 
@@ -31,7 +31,13 @@
 </template>
 
 <script>
-
+  export default {
+    methods: {
+      closeSystem: function (event) {
+        console.log('123')
+      }
+    }
+  }
 </script>
 
 <style scoped>
