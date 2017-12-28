@@ -18,20 +18,7 @@
 
 <script>
   import SearchHeader from './header/SearchHeader.vue'
-  const dgram = require('dgram')
-  const client = dgram.createSocket('udp4')
   export default {
-    mounted: function () {
-      this.startServer()
-    },
-    methods: {
-      startServer: function () {
-        client.send('1_lbt4_10#32899#002481627512#0#0#0:1289671407:Administrator:MICROSO-697TGLD:32:一日不见，如三月兮', 2425, '10.211.55.3', (err) => {
-          console.log('sended');
-          client.close();
-        });
-      }
-    },
     components: {
       SearchHeader
     }
