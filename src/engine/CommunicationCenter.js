@@ -1,6 +1,14 @@
 const dgram = require('dgram')
 const os = require('os')
 const batman = dgram.createSocket('udp4')
+const defPort = 2425
+// 命令字
+const commandNumber = {
+    // 未知
+    zero: 0,
+    // 上线
+    online: 6291457
+}
 
 batman.on('error', (err) => {
     console.log(`服务器异常：\n${err.stack}`);
@@ -8,7 +16,7 @@ batman.on('error', (err) => {
 });
 
 batman.on('message', (msg, rinfo) => {
-    console.log(`服务器收到：${msg} 来自 ${rinfo.address}:${rinfo.port}`);
+    console.log(`服务器收到来自 ${rinfo.address}:${rinfo.port} 的消息：${msg}`);
 });
 
 batman.on('listening', () => {
@@ -20,33 +28,34 @@ batman.on('close', () => {
     console.log('服务器监听关闭');
 });
 
-batman.bind(2425);
+batman.bind(defPort);
 
 export default {
     /**
      * 给默认端口发送消息
      */
-    send: function(message, address) {
+    send: function (message, address) {
         batman.send(
             message,
-            2425,
+            defPort,
             address
         );
+        console.log(`发送消息 ${message} 到 ${address}:${defPort}`);
     },
 
     /**
      * 通知大伙，上线了！
      */
-    enter: function(name) {
+    enter: function (name) {
         batman.send(
-            `1_lbt6_8#998#${getMacAddress()}#0#0#0#4001#9:${Date.now()}:${name}:${os.hostname()}:0:`,
-            2425,
-            getCurrentIPEndAddress()
+            `1_lbt6_8#998#${this.getMacAddress()}#0#0#0#4001#9:${Date.now()}:${name}:${os.hostname()}:${commandNumber.zero}:`,
+            defPort,
+            this.getCurrentIPEndAddress()
         )
 
         batman.send(
-            `1_lbt6_8#998#${getMacAddress}#0#0#0#4001#9:${Date.now()}:${name}:${os.hostname()}:6291457:`,
-            2425,
+            `1_lbt6_8#998#${this.getMacAddress()}#0#0#0#4001#9:${Date.now()}:${name}:${os.hostname()}:${commandNumber.online}:`,
+            defPort,
             '255.255.255.255'
         )
     },
@@ -54,7 +63,7 @@ export default {
     /**
      * 获得当前IP下最后一个地址
      */
-    getCurrentIPEndAddress: function() {
+    getCurrentIPEndAddress: function () {
         let interfaces = os.networkInterfaces();
         for (let devName in interfaces) {
             let iface = interfaces[devName];
@@ -70,7 +79,7 @@ export default {
     /**
      * 获得 mac 地址
      */
-    getMacAddress: function() {
+    getMacAddress: function () {
         let interfaces = os.networkInterfaces();
         for (let devName in interfaces) {
             let iface = interfaces[devName];

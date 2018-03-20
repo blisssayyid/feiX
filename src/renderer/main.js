@@ -11,6 +11,7 @@ import center from '../engine/CommunicationCenter'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
+Vue.prototype.$center = center
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)

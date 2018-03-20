@@ -18,13 +18,13 @@
 
 <script>
     import SearchHeader from './header/SearchHeader.vue'
-    // import center from '../../engine/CommunicationCenter'
+
     export default {
         components: {
             SearchHeader
         },
-        methods: {
-
+        mounted: function () {
+            this.$center.enter('tincher-app')
         }
     }
 </script>
@@ -59,7 +59,7 @@
         width: 100%;
         align-items: center;
         justify-content: center;
-        border-left:1px solid rgba(64, 158, 255, 0.1);
+        border-left: 1px solid rgba(64, 158, 255, 0.1);
         flex-direction: column;
         background-color: #FFFFFF;
     }
