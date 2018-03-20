@@ -7,6 +7,7 @@ import store from './store'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import center from '../engine/CommunicationCenter'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
@@ -16,8 +17,8 @@ Vue.use(ElementUI)
 
 /* eslint-disable no-new */
 new Vue({
-  components: { App },
-  router,
-  store,
-  template: '<App/>'
+    components: { App },
+    router,
+    store,
+    template: '<App/>'
 }).$mount('#app')
