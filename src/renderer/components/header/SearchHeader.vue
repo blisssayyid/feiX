@@ -6,7 +6,7 @@
 
                 </div>
 
-                <div class='title-btn title-minimize'>
+                <div class='title-btn title-minimize' @click='sendFmsg'>
 
                 </div>
 
@@ -35,6 +35,9 @@
         methods: {
             closeSystem: function (event) {
                 console.log('close')
+            },
+            sendFmsg: function (event) {
+                this.$center.message("你好，世界", "192.168.3.30")
             }
         }
     }

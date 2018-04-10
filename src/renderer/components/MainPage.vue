@@ -24,7 +24,6 @@
             SearchHeader
         },
         mounted: function () {
-            this.$center.enter('tincher-app')
         }
     }
 </script>
