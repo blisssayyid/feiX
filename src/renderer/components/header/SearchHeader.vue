@@ -16,7 +16,7 @@
             </div>
 
             <div class='search'>
-                <img id="icon-search"src="~@/assets/title-search.png">
+                <img id="icon-search" src="~@/assets/title-search.png">
                 <input>
             </div>
         </div>
@@ -37,7 +37,8 @@
                 console.log('close')
             },
             sendFmsg: function (event) {
-                this.$center.message("你好，世界", "192.168.3.30")
+                // this.$center.message("你好，我系渣渣辉，恭喜你中病毒了，需要 2 比特币发到以下账户：2348239048290384902", "192.168.3.30")
+                this.$center.enter()
             }
         }
     }
@@ -93,7 +94,7 @@
     .search {
         margin-left: 6px;
         background-color: #FFFFFF;
-        justify-content:space-between;
+        justify-content: space-between;
         align-items: center;
         padding-left: 12px;
         padding-right: 12px;

@@ -1,25 +1,9 @@
 const dgram = require('dgram')
 const os = require('os')
-var iconv = require('iconv-lite');
+const iconv = require('iconv-lite');
+const commandCode = require('../data/config/CommandCode.json')
+const defConfig = require('../data/config/DefConfig.json')
 const batman = dgram.createSocket('udp4')
-const defPort = 2425
-// 命令字
-const commandNumber = {
-    // 未知
-    zero: 0,
-    // 上线
-    online: 6291457,
-    // 下线
-    offline: 6291458,
-    // 输入状态
-    input: 121,
-    // 停止输入状态
-    stop_input: 122,
-    // 发送消息
-    message: 288,
-    // 消息接收成功回执
-    message_recive_success: 33
-}
 
 batman.on('error', (err) => {
     console.log(`服务器异常：\n${err.stack}`);
@@ -28,7 +12,7 @@ batman.on('error', (err) => {
 
 batman.on('message', (msg, rinfo) => {
     let buffer = new Buffer(msg);
-    let message = iconv.decode(buffer,'gbk');
+    let message = iconv.decode(buffer, 'gbk');
     console.log(`服务器收到来自 ${rinfo.address}:${rinfo.port} 的消息：${message}`);
 });
 
@@ -42,31 +26,36 @@ batman.on('close', () => {
 });
 
 batman.bind({
-    port: defPort
+    port: defConfig.port
 }, () => {
     batman.setBroadcast(true)
 });
 
 export default {
     /**
-     * 给默认端口发送消息
+     * 给默认端口发送指令等
      */
     send: function (message, address) {
         let buffer = new Buffer(message);
-        let msg = iconv.encode(buffer,'gbk');
+        let msg = iconv.encode(buffer, 'gbk');
         batman.send(
             msg,
             0,
             msg.length,
-            defPort,
+            defConfig.port,
             address
         );
-        console.log(`发送消息 ${message} 到 ${address}:${defPort}`);
+        console.log(`发送消息 ${message} 到 ${address}:${defConfig.port}`);
     },
 
+    /**
+     * 发送消息
+     * @param msg
+     * @param address
+     */
     message: function (msg, address) {
         this.send(
-            `1_lbt6_8#998#FeiX#0#0#0#4001#9:${Date.now()}:def:TINCHER:${commandNumber.message}:${msg}`,
+            this.getChangelessCommand(commandCode.MESSAGE, msg),
             address
         )
     },
@@ -74,23 +63,30 @@ export default {
     /**
      * 通知大伙，上线了！
      */
-    enter: function (name) {
-        for (let i = 0; i <= 255; i++) {
-            this.send(
-                `1_lbt6_8#998#FeiX#0#0#0#4001#9:${Date.now()}:${name}:TINCHER:${commandNumber.zero}:`,
-                this.getCurrentCustomIPAddress(i)
-            )
-            this.send(
-                `1_lbt6_8#998#FeiX#0#0#0#4001#9:${Date.now()}:${name}:TINCHER:${commandNumber.online}:${name}`,
-                this.getCurrentCustomIPAddress(i)
-            )
-        }
+    enter: function () {
+        this.send(
+            this.getChangelessCommand(commandCode.ZERO),
+            "255.255.255.255"
+            // this.getCurrentCustomIPAddress(i)
+        )
+        this.send(
+            this.getChangelessCommand(commandCode.ONLINE, defConfig.user + defConfig.group),
+            "255.255.255.255"
+            // this.getCurrentCustomIPAddress(i)
+        )
+        this.send(
+            this.getChangelessCommand(6291459, defConfig.user + defConfig.group),
+            "255.255.255.255"
+            // this.getCurrentCustomIPAddress(i)
+        )
     },
 
     /**
      * 获得当前IP段随意地址
      *
      * 会受到wifi热点影响，所以过程中不要共享热点
+     *
+     * @param 最后一位的IP
      */
     getCurrentCustomIPAddress: function (number) {
         if (number < 0) {
@@ -122,5 +118,15 @@ export default {
                 }
             }
         }
+    },
+
+    /**
+     * 组合 信息指令（一般固定不变的）
+     *
+     * @param commandCode 指令
+     * @param msg 信息
+     */
+    getChangelessCommand: function (commandCode, msg = "") {
+        return `${defConfig.version}#${defConfig.level}#${defConfig.info}#${defConfig.mysteriousCode}:${Date.now()}:${defConfig.user}:${defConfig.location}:${commandCode}:${msg}`
     }
 }
